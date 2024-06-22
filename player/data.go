@@ -1,64 +1,62 @@
 package player
 
-import "fmt"
+import (
+	"strconv"
+	"strings"
 
-func (p *Player) Title() (string, error) {
-	attrs, err := p.client.CurrentSong()
-	if err != nil {
-		return "", err
-	}
+	"github.com/pspiagicw/goreland"
+)
 
-	return attrs["Title"], nil
+type Song struct {
+	Title       string
+	Artist      string
+	Album       string
+	AlbumArtist string
+	IsPlaying   bool
+	Format      string
+	Bits        string
+	Frequency   int
 }
-func (p *Player) Artist() (string, error) {
-	attrs, err := p.client.CurrentSong()
-	if err != nil {
-		return "", err
-	}
 
-	return attrs["Artist"], nil
-}
-func (p *Player) Album() (string, error) {
-	attrs, err := p.client.CurrentSong()
-	if err != nil {
-		return "", err
-	}
-
-	return attrs["Album"], nil
-}
-func (p *Player) AlbumArtist() (string, error) {
-	attrs, err := p.client.CurrentSong()
-	if err != nil {
-		return "", err
-	}
-
-	return attrs["AlbumArtist"], nil
-}
 func (p Player) Song() (*Song, error) {
-	title, err := p.Title()
+	attrs, err := p.client.CurrentSong()
+
 	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
+		return nil, err
 	}
 
-	artist, err := p.Artist()
+	isPlaying, err := p.IsPlaying()
+
 	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
+		return nil, err
 	}
 
-	album, err := p.Album()
-	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
-	}
-
-	albumArtist, err := p.AlbumArtist()
-	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
-	}
+	title := attrs["Title"]
+	artist := attrs["Artist"]
+	album := attrs["Album"]
+	albumArtist := attrs["AlbumArtist"]
+	format := attrs["Format"]
+	freq, bits := parseFormat(format)
 
 	return &Song{
 		Title:       title,
 		Artist:      artist,
 		Album:       album,
 		AlbumArtist: albumArtist,
+		Format:      format,
+		IsPlaying:   isPlaying,
+		Frequency:   freq,
+		Bits:        bits,
 	}, nil
+}
+func parseFormat(format string) (int, string) {
+	parts := strings.Split(format, ":")
+	if len(parts) != 3 {
+		return 0, "Unknown"
+	}
+	freq, err := strconv.ParseInt(parts[0], 10, 32)
+	if err != nil {
+		goreland.LogFatal("Error parsing frequency: %v", err)
+	}
+	return int(freq), parts[1]
 }

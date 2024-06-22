@@ -9,13 +9,13 @@ import (
 
 var handlers = map[string]func(*argparse.Opts){
 	"volume": manage.Volume,
-	"add":    notImplemented,
 	"play":   manage.Play,
 	"pause":  manage.Pause,
 	"next":   manage.Next,
 	"prev":   manage.Prev,
-	"status": notImplemented,
+	"status": manage.Status,
 	"toggle": manage.Toggle,
+	"album":  manage.Album,
 	"help": func(opts *argparse.Opts) {
 		help.Help()
 	},

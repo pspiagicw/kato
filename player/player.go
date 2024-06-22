@@ -13,29 +13,53 @@ type Player struct {
 	client *mpd.Client
 }
 
-type Song struct {
-	Title       string
-	Artist      string
-	Album       string
-	AlbumArtist string
-}
-
 func New(opts *argparse.Opts) *Player {
 	p := &Player{}
 	p.connect(opts.Host, opts.Port)
 	return p
 
 }
+func (p *Player) PlayAlbum(album string) error {
+	err := p.client.Clear()
 
-func (p *Player) Toggle() error {
-	status, err := p.client.Status()
 	if err != nil {
 		return err
 	}
-	if status["state"] == "pause" {
-		return p.client.Pause(false)
-	} else {
+
+	tracks, err := p.client.Find("album", album)
+
+	if err != nil {
+		return err
+	}
+
+	for _, track := range tracks {
+		err = p.client.Add(track["file"])
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return p.Play()
+}
+
+func (p *Player) IsPlaying() (bool, error) {
+	status, err := p.client.Status()
+	if err != nil {
+		return false, err
+	}
+	return status["state"] != "pause", nil
+}
+
+func (p *Player) Toggle() error {
+	isPlaying, err := p.IsPlaying()
+	if err != nil {
+		return err
+	}
+	if isPlaying {
 		return p.client.Pause(true)
+	} else {
+		return p.client.Pause(false)
 	}
 }
 func (p *Player) SetVolume(vol int) error {
@@ -66,6 +90,20 @@ func (p *Player) Volume() (int, error) {
 		return 0, err
 	}
 	return int(vol), nil
+}
+func (p *Player) Status() (map[string]string, error) {
+	status, err := p.client.Status()
+	if err != nil {
+		return map[string]string{}, err
+	}
+	return status, nil
+}
+func (p *Player) Albums() ([]string, error) {
+	albums, err := p.client.List("album")
+	if err != nil {
+		return []string{}, err
+	}
+	return albums, nil
 }
 
 func (p *Player) connect(host, port string) {

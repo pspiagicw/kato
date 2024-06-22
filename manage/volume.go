@@ -121,7 +121,10 @@ func (m VolumeModel) View() string {
 	bar := m.widget.ViewAs(percent)
 	help := m.help.ShortHelpView(m.keys.ShortHelp())
 
-	return lipgloss.JoinVertical(lipgloss.Left, bar, help)
+	content := lipgloss.JoinVertical(lipgloss.Left, bar, help)
+
+	padding := lipgloss.NewStyle().PaddingTop(1).PaddingLeft(2).PaddingBottom(1)
+	return padding.Render(content)
 }
 
 func Volume(opts *argparse.Opts) {
