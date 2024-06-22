@@ -20,3 +20,14 @@ func Prev(opts *argparse.Opts) {
 
 	player.Prev()
 }
+
+func Play(opts *argparse.Opts) {
+	player := player.New(opts)
+
+	player.Play()
+}
+func Pause(opts *argparse.Opts) {
+	player := player.New(opts)
+
+	player.Pause()
+}

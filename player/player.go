@@ -2,6 +2,7 @@ package player
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/pspiagicw/goreland"
@@ -37,72 +38,34 @@ func (p *Player) Toggle() error {
 		return p.client.Pause(true)
 	}
 }
+func (p *Player) SetVolume(vol int) error {
+	return p.client.SetVolume(vol)
+}
 func (p *Player) Next() error {
 	return p.client.Next()
 }
 func (p *Player) Prev() error {
 	return p.client.Previous()
 }
-
-func (p *Player) Title() (string, error) {
-	attrs, err := p.client.CurrentSong()
-	if err != nil {
-		return "", err
-	}
-
-	return attrs["Title"], nil
+func (p *Player) Play() error {
+	return p.client.Play(-1)
 }
-func (p *Player) Artist() (string, error) {
-	attrs, err := p.client.CurrentSong()
-	if err != nil {
-		return "", err
-	}
-
-	return attrs["Artist"], nil
+func (p *Player) Pause() error {
+	return p.client.Pause(true)
 }
-func (p *Player) Album() (string, error) {
-	attrs, err := p.client.CurrentSong()
+func (p *Player) Volume() (int, error) {
+	status, err := p.client.Status()
 	if err != nil {
-		return "", err
+		return 0, err
 	}
+	volStr := status["volume"]
 
-	return attrs["Album"], nil
-}
-func (p *Player) AlbumArtist() (string, error) {
-	attrs, err := p.client.CurrentSong()
+	vol, err := strconv.ParseInt(volStr, 10, 32)
+
 	if err != nil {
-		return "", err
+		return 0, err
 	}
-
-	return attrs["AlbumArtist"], nil
-}
-func (p Player) Song() (*Song, error) {
-	title, err := p.Title()
-	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
-	}
-
-	artist, err := p.Artist()
-	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
-	}
-
-	album, err := p.Album()
-	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
-	}
-
-	albumArtist, err := p.AlbumArtist()
-	if err != nil {
-		return nil, fmt.Errorf("Error: %v", err)
-	}
-
-	return &Song{
-		Title:       title,
-		Artist:      artist,
-		Album:       album,
-		AlbumArtist: albumArtist,
-	}, nil
+	return int(vol), nil
 }
 
 func (p *Player) connect(host, port string) {

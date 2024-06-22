@@ -8,9 +8,10 @@ import (
 )
 
 var handlers = map[string]func(*argparse.Opts){
+	"volume": manage.Volume,
 	"add":    notImplemented,
-	"play":   notImplemented,
-	"pause":  notImplemented,
+	"play":   manage.Play,
+	"pause":  manage.Pause,
 	"next":   manage.Next,
 	"prev":   manage.Prev,
 	"status": notImplemented,
