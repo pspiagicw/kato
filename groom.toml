@@ -1,0 +1,18 @@
+name = "yamp"
+
+
+[task.build]
+command = "go build ."
+description = "Build the project"
+depends = [
+    "format"
+]
+
+[task.format]
+command = "go fmt ./..."
+description = "Format the project"
+
+
+[task.run]
+command = "go run ."
+description = "Run the project"
