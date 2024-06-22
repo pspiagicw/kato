@@ -1,6 +1,10 @@
 package argparse
 
-import "flag"
+import (
+	"flag"
+
+	"github.com/pspiagicw/yamc/help"
+)
 
 type Opts struct {
 	Host string
@@ -22,10 +26,12 @@ func (o *Opts) Command() string {
 }
 
 func Parse() *Opts {
+
+	flag.Usage = help.Help
 	o := new(Opts)
 
-	flag.StringVar(&o.Host, `host`, "localhost", "Host to connect to")
-	flag.StringVar(&o.Port, "port", "6666", "Port to connect to")
+	flag.StringVar(&o.Host, `host`, "127.0.0.1", "Host to connect to")
+	flag.StringVar(&o.Port, "port", "6600", "Port to connect to")
 
 	flag.Parse()
 	o.Args = flag.Args()

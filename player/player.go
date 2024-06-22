@@ -5,6 +5,7 @@ import (
 
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/pspiagicw/goreland"
+	"github.com/pspiagicw/yamc/argparse"
 )
 
 type Player struct {
@@ -18,12 +19,31 @@ type Song struct {
 	AlbumArtist string
 }
 
-func New() *Player {
+func New(opts *argparse.Opts) *Player {
 	p := &Player{}
-	p.connect()
+	p.connect(opts.Host, opts.Port)
 	return p
 
 }
+
+func (p *Player) Toggle() error {
+	status, err := p.client.Status()
+	if err != nil {
+		return err
+	}
+	if status["state"] == "pause" {
+		return p.client.Pause(false)
+	} else {
+		return p.client.Pause(true)
+	}
+}
+func (p *Player) Next() error {
+	return p.client.Next()
+}
+func (p *Player) Prev() error {
+	return p.client.Previous()
+}
+
 func (p *Player) Title() (string, error) {
 	attrs, err := p.client.CurrentSong()
 	if err != nil {
@@ -85,9 +105,11 @@ func (p Player) Song() (*Song, error) {
 	}, nil
 }
 
-func (p *Player) connect() {
+func (p *Player) connect(host, port string) {
 
-	client, err := mpd.Dial("tcp", "192.168.1.45:6600")
+	addr := fmt.Sprintf("%s:%s", host, port)
+
+	client, err := mpd.Dial("tcp", addr)
 
 	if err != nil {
 		goreland.LogFatal("Failed to connect to MPD server: %v", err)
