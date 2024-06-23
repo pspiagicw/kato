@@ -18,14 +18,15 @@ func Album(opts *argparse.Opts) {
 	player.PlayAlbum(albums[selection])
 }
 
-func Artist(opts *argparse.Opts) {
-	player := player.New(opts)
-
+func selectArtist(player *player.Player) string {
 	artists := player.Artists()
 
 	selection := promptSelection("", artists)
 
-	songs := player.SongsByArtist(artists[selection])
+	return artists[selection]
+}
+func selectSongs(player *player.Player, artist string) []mpd.Attrs {
+	songs := player.SongsByArtist(artist)
 
 	selections := promptMultiple("", getNames(songs))
 
@@ -35,7 +36,16 @@ func Artist(opts *argparse.Opts) {
 		selectedSongs[i] = songs[selection]
 	}
 
-	player.PlaySongs(selectedSongs)
+	return selectedSongs
+}
+func Artist(opts *argparse.Opts) {
+	player := player.New(opts)
+
+	artist := selectArtist(player)
+
+	songs := selectSongs(player, artist)
+
+	player.PlaySongs(songs)
 }
 func getNames(songs []mpd.Attrs) []string {
 	names := make([]string, len(songs))
