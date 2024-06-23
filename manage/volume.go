@@ -40,11 +40,7 @@ func (m VolumeModel) Init() tea.Cmd {
 }
 func NewVolumeModel(opts *argparse.Opts) VolumeModel {
 	p := player.New(opts)
-	vol, err := p.Volume()
-
-	if err != nil {
-		goreland.LogFatal("Error: %v", err)
-	}
+	vol := p.Volume()
 
 	keys := getKeyMap()
 	return VolumeModel{
@@ -93,11 +89,7 @@ func (m VolumeModel) raiseVolume() VolumeModel {
 
 	m.volume = min(100, m.volume)
 
-	err := m.player.SetVolume(m.volume)
-
-	if err != nil {
-		goreland.LogError("Error setting volume: %v", err)
-	}
+	m.player.SetVolume(m.volume)
 
 	return m
 
@@ -107,11 +99,8 @@ func (m VolumeModel) lowerVolume() VolumeModel {
 
 	m.volume = max(0, m.volume)
 
-	err := m.player.SetVolume(m.volume)
+	m.player.SetVolume(m.volume)
 
-	if err != nil {
-		goreland.LogError("Error setting volume: %v", err)
-	}
 	return m
 
 }

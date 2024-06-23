@@ -19,34 +19,52 @@ type Song struct {
 	Frequency   int
 }
 
-func (p *Player) SongsByArtist(artist string) ([]mpd.Attrs, error) {
-	return p.client.Search("artist", artist)
+func (p *Player) SongsByArtist(artist string) []mpd.Attrs {
+	tracks, err := p.client.Search("artist", artist)
+
+	if err != nil {
+		goreland.LogFatal("Failed to find tracks by artist: %v", err)
+	}
+
+	return tracks
 }
 
-func (p Player) Artists() ([]string, error) {
-	return p.client.List("artist")
+func (p *Player) SongsByAlbum(album string) []mpd.Attrs {
+	tracks, err := p.client.Find("album", album)
+
+	if err != nil {
+		goreland.LogFatal("Failed to find tracks by album: %v", err)
+	}
+
+	return tracks
 }
 
-func (p *Player) Albums() ([]string, error) {
+func (p Player) Artists() []string {
+	tracks, err := p.client.List("artist")
+
+	if err != nil {
+		goreland.LogFatal("Failed to list artists: %v", err)
+	}
+
+	return tracks
+}
+
+func (p *Player) Albums() []string {
 	albums, err := p.client.List("album")
 	if err != nil {
-		return []string{}, err
+		goreland.LogFatal("Failed to list albums: %v", err)
 	}
-	return albums, nil
+	return albums
 }
 
-func (p Player) Song() (*Song, error) {
+func (p Player) Song() *Song {
 	attrs, err := p.client.CurrentSong()
 
 	if err != nil {
-		return nil, err
+		goreland.LogFatal("Failed to get current song: %v", err)
 	}
 
-	isPlaying, err := p.IsPlaying()
-
-	if err != nil {
-		return nil, err
-	}
+	isPlaying := p.IsPlaying()
 
 	title := attrs["Title"]
 	artist := attrs["Artist"]
@@ -64,7 +82,7 @@ func (p Player) Song() (*Song, error) {
 		IsPlaying:   isPlaying,
 		Frequency:   freq,
 		Bits:        bits,
-	}, nil
+	}
 }
 func parseFormat(format string) (int, string) {
 	parts := strings.Split(format, ":")

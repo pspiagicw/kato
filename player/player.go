@@ -19,115 +19,131 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
-func (p *Player) Shuffle() error {
+func (p *Player) Clear() {
 	err := p.client.Clear()
 
 	if err != nil {
-		return err
+		goreland.LogFatal("Failed to clear playlist: %v", err)
 	}
 
-	err = p.client.Random(false)
-
-	if err != nil {
-		return err
-	}
-
-	err = p.client.Add("/")
-
-	if err != nil {
-		return err
-	}
-
-	return p.Play()
 }
-func (p *Player) PlaySongs(songs []mpd.Attrs) error {
-	err := p.client.Clear()
+func (p *Player) Random(state bool) {
+	err := p.client.Random(state)
 
 	if err != nil {
-		return err
+		goreland.LogFatal("Failed to set random state: %v", err)
 	}
+
+}
+func (p *Player) Shuffle() {
+
+	p.Clear()
+	p.Random(true)
+
+	err := p.client.Add("/")
+
+	if err != nil {
+		goreland.LogFatal("Failed to add all songs to playlist: %v", err)
+	}
+
+	p.Play()
+}
+func (p *Player) Add(track mpd.Attrs) {
+	err := p.client.Add(track["file"])
+
+	if err != nil {
+		goreland.LogFatal("Failed to add song to playlist: %v", err)
+	}
+
+}
+func (p *Player) PlaySongs(songs []mpd.Attrs) {
+	p.Clear()
 
 	for _, track := range songs {
-		err := p.client.Add(track["file"])
-
-		if err != nil {
-			return err
-		}
+		p.Add(track)
 	}
 
-	return p.Play()
+	p.Play()
 }
-func (p *Player) PlayAlbum(album string) error {
+func (p *Player) PlayAlbum(album string) {
 
-	err := p.client.Random(false)
+	p.Random(false)
 
-	if err != nil {
-		return err
-	}
+	tracks := p.SongsByAlbum(album)
 
-	tracks, err := p.client.Find("album", album)
-
-	if err != nil {
-		return err
-	}
-
-	return p.PlaySongs(tracks)
+	p.PlaySongs(tracks)
 }
 
-func (p *Player) IsPlaying() (bool, error) {
-	status, err := p.client.Status()
-	if err != nil {
-		return false, err
-	}
-	return status["state"] != "pause", nil
+func (p *Player) IsPlaying() bool {
+	status := p.Status()
+	return status["state"] != "pause"
 }
 
-func (p *Player) Toggle() error {
-	isPlaying, err := p.IsPlaying()
-	if err != nil {
-		return err
-	}
-	if isPlaying {
-		return p.client.Pause(true)
+func (p *Player) Toggle() {
+	if p.IsPlaying() {
+		p.Pause(true)
 	} else {
-		return p.client.Pause(false)
+		p.Pause(false)
+
 	}
 }
-func (p *Player) SetVolume(vol int) error {
-	return p.client.SetVolume(vol)
-}
-func (p *Player) Next() error {
-	return p.client.Next()
-}
-func (p *Player) Prev() error {
-	return p.client.Previous()
-}
-func (p *Player) Play() error {
-	return p.client.Play(-1)
-}
-func (p *Player) Pause() error {
-	return p.client.Pause(true)
-}
-func (p *Player) Volume() (int, error) {
-	status, err := p.client.Status()
+func (p *Player) SetVolume(vol int) {
+	err := p.client.SetVolume(vol)
+
 	if err != nil {
-		return 0, err
+		goreland.LogFatal("Failed to set volume: %v", err)
 	}
+}
+func (p *Player) Next() {
+	err := p.client.Next()
+
+	if err != nil {
+		goreland.LogFatal("Failed to play next: %v", err)
+	}
+}
+func (p *Player) Prev() {
+	err := p.client.Previous()
+
+	if err != nil {
+		goreland.LogFatal("Failed to play previous: %v", err)
+	}
+}
+func (p *Player) Play() {
+	err := p.client.Play(-1)
+
+	if err != nil {
+		goreland.LogFatal("Failed to play: %v", err)
+	}
+}
+func (p *Player) Pause(status bool) {
+	err := p.client.Pause(status)
+
+	if err != nil {
+		goreland.LogFatal("Failed to pause: %v", err)
+	}
+}
+func (p *Player) Volume() int {
+	status := p.Status()
+
 	volStr := status["volume"]
 
-	vol, err := strconv.ParseInt(volStr, 10, 32)
+	return toInt(volStr)
 
-	if err != nil {
-		return 0, err
-	}
-	return int(vol), nil
 }
-func (p *Player) Status() (map[string]string, error) {
+func toInt(s string) int {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		goreland.LogFatal("Failed to convert string to int: %v", err)
+	}
+	return i
+}
+
+func (p *Player) Status() mpd.Attrs {
 	status, err := p.client.Status()
 	if err != nil {
-		return map[string]string{}, err
+		goreland.LogFatal("Failed to get status: %v", err)
 	}
-	return status, nil
+	return status
 }
 
 func (p *Player) connect(host, port string) {

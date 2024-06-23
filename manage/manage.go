@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/yamc/argparse"
 	"github.com/pspiagicw/yamc/player"
 )
@@ -49,16 +48,13 @@ func Play(opts *argparse.Opts) {
 func Pause(opts *argparse.Opts) {
 	player := player.New(opts)
 
-	player.Pause()
+	player.Pause(true)
 }
 func Status(opts *argparse.Opts) {
 	player := player.New(opts)
 
-	song, err := player.Song()
+	song := player.Song()
 
-	if err != nil {
-		goreland.LogFatal("Error getting song: %s", err)
-	}
 	prettyPrint(song)
 }
 func prettyPrint(song *player.Song) {
