@@ -19,6 +19,12 @@ var artistStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{
 // var artistStyle = lipgloss.NewStyle()
 var albumStyle = lipgloss.NewStyle().Italic(false)
 
+func Shuffle(opts *argparse.Opts) {
+	player := player.New(opts)
+
+	player.Shuffle()
+}
+
 func Toggle(opts *argparse.Opts) {
 	player := player.New(opts)
 

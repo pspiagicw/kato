@@ -8,15 +8,24 @@ import (
 )
 
 var handlers = map[string]func(*argparse.Opts){
-	"volume": manage.Volume,
-	"play":   manage.Play,
-	"pause":  manage.Pause,
-	"next":   manage.Next,
-	"prev":   manage.Prev,
-	"status": manage.Status,
-	"toggle": manage.Toggle,
-	"album":  manage.Album,
-	"artist": manage.Artist,
+	"volume":   manage.Volume,
+	"play":     manage.Play,
+	"pause":    manage.Pause,
+	"next":     manage.Next,
+	"prev":     manage.Prev,
+	"status":   manage.Status,
+	"toggle":   manage.Toggle,
+	"album":    manage.Album,
+	"artist":   manage.Artist,
+	"shuffle":  manage.Shuffle,
+	"stop":     notImplemented,
+	"mark":     notImplemented,
+	"format":   notImplemented,
+	"save":     notImplemented,
+	"version":  notImplemented,
+	"load":     notImplemented,
+	"like":     notImplemented,
+	"playlist": notImplemented,
 	"help": func(opts *argparse.Opts) {
 		help.Help()
 	},

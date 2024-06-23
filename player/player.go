@@ -19,6 +19,27 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
+func (p *Player) Shuffle() error {
+	err := p.client.Clear()
+
+	if err != nil {
+		return err
+	}
+
+	err = p.client.Random(false)
+
+	if err != nil {
+		return err
+	}
+
+	err = p.client.Add("/")
+
+	if err != nil {
+		return err
+	}
+
+	return p.Play()
+}
 func (p *Player) PlaySongs(songs []mpd.Attrs) error {
 	err := p.client.Clear()
 
