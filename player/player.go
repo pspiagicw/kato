@@ -19,8 +19,26 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
-func (p *Player) PlayAlbum(album string) error {
+func (p *Player) PlaySongs(songs []mpd.Attrs) error {
 	err := p.client.Clear()
+
+	if err != nil {
+		return err
+	}
+
+	for _, track := range songs {
+		err := p.client.Add(track["file"])
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return p.Play()
+}
+func (p *Player) PlayAlbum(album string) error {
+
+	err := p.client.Random(false)
 
 	if err != nil {
 		return err
@@ -32,15 +50,7 @@ func (p *Player) PlayAlbum(album string) error {
 		return err
 	}
 
-	for _, track := range tracks {
-		err = p.client.Add(track["file"])
-
-		if err != nil {
-			return err
-		}
-	}
-
-	return p.Play()
+	return p.PlaySongs(tracks)
 }
 
 func (p *Player) IsPlaying() (bool, error) {
@@ -97,13 +107,6 @@ func (p *Player) Status() (map[string]string, error) {
 		return map[string]string{}, err
 	}
 	return status, nil
-}
-func (p *Player) Albums() ([]string, error) {
-	albums, err := p.client.List("album")
-	if err != nil {
-		return []string{}, err
-	}
-	return albums, nil
 }
 
 func (p *Player) connect(host, port string) {

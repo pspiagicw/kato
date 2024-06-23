@@ -16,6 +16,7 @@ var handlers = map[string]func(*argparse.Opts){
 	"status": manage.Status,
 	"toggle": manage.Toggle,
 	"album":  manage.Album,
+	"artist": manage.Artist,
 	"help": func(opts *argparse.Opts) {
 		help.Help()
 	},

@@ -18,6 +18,33 @@ func Help() {
 			"MPD port to connect to",
 		},
 	)
+	pelp.Aligned(
+		"commands",
+		[]string{
+			"volume",
+			"play",
+			"pause",
+			"next",
+			"prev",
+			"status",
+			"toggle",
+			"album",
+			"artist",
+			"help",
+		},
+		[]string{
+			"Get or set the volume",
+			"Start playing",
+			"Pause playback",
+			"Play the next song",
+			"Play the previous song",
+			"Get the current status",
+			"Toggle play/pause",
+			"Play an album",
+			"Play specific songs of an artist",
+			"Show this help message",
+		},
+	)
 	pelp.HeaderWithDescription(
 		"More Help",
 		[]string{

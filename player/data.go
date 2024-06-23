@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/fhs/gompd/v2/mpd"
 	"github.com/pspiagicw/goreland"
 )
 
@@ -16,6 +17,22 @@ type Song struct {
 	Format      string
 	Bits        string
 	Frequency   int
+}
+
+func (p *Player) SongsByArtist(artist string) ([]mpd.Attrs, error) {
+	return p.client.Search("artist", artist)
+}
+
+func (p Player) Artists() ([]string, error) {
+	return p.client.List("artist")
+}
+
+func (p *Player) Albums() ([]string, error) {
+	albums, err := p.client.List("album")
+	if err != nil {
+		return []string{}, err
+	}
+	return albums, nil
 }
 
 func (p Player) Song() (*Song, error) {
