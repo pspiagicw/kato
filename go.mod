@@ -8,6 +8,7 @@ require (
 	github.com/charmbracelet/bubbletea v0.26.5
 	github.com/charmbracelet/lipgloss v0.10.0
 	github.com/fhs/gompd/v2 v2.3.0
+	github.com/gerow/pager v0.0.0-20190420205801-6d4a2327822f
 	github.com/pspiagicw/goreland v0.1.1
 	github.com/pspiagicw/pelp v0.1.0
 )

@@ -19,6 +19,41 @@ type Song struct {
 	Frequency   int
 }
 
+func (p *Player) Playlist() []mpd.Attrs {
+	tracks, err := p.client.PlaylistInfo(-1, -1)
+	if err != nil {
+		goreland.LogFatal("Failed to get playlist: %v", err)
+	}
+
+	return tracks
+}
+func (p *Player) Position() int {
+	pos, err := p.client.Status()
+	if err != nil {
+		goreland.LogFatal("Failed to get current song position: %v", err)
+	}
+	result, err := strconv.Atoi(pos["song"])
+
+	if err != nil {
+		goreland.LogFatal("Failed to convert song position to integer: %v", err)
+	}
+
+	return result
+}
+func (p *Player) NextPosition() int {
+	pos, err := p.client.Status()
+	if err != nil {
+		goreland.LogFatal("Failed to get current song position: %v", err)
+	}
+	result, err := strconv.Atoi(pos["nextsong"])
+
+	if err != nil {
+		goreland.LogFatal("Failed to convert song position to integer: %v", err)
+	}
+
+	return result
+}
+
 func (p *Player) SongsByArtist(artist string) []mpd.Attrs {
 	tracks, err := p.client.Search("artist", artist)
 
