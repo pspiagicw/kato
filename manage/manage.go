@@ -45,6 +45,11 @@ func Play(opts *argparse.Opts) {
 
 	player.Play()
 }
+func Stop(opts *argparse.Opts) {
+	player := player.New(opts)
+
+	player.Stop()
+}
 func Pause(opts *argparse.Opts) {
 	player := player.New(opts)
 

@@ -19,6 +19,13 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
+func (p *Player) Stop() {
+	err := p.client.Stop()
+
+	if err != nil {
+		goreland.LogFatal("Failed to stop playback: %v", err)
+	}
+}
 func (p *Player) Clear() {
 	err := p.client.Clear()
 

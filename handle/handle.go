@@ -18,7 +18,7 @@ var handlers = map[string]func(*argparse.Opts){
 	"album":    manage.Album,
 	"artist":   manage.Artist,
 	"shuffle":  manage.Shuffle,
-	"stop":     notImplemented,
+	"stop":     manage.Stop,
 	"mark":     notImplemented,
 	"format":   notImplemented,
 	"save":     notImplemented,
