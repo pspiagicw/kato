@@ -19,6 +19,20 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
+func (p *Player) Repeat(state bool) {
+	err := p.client.Repeat(state)
+
+	if err != nil {
+		goreland.LogFatal("Failed to set repeat state: %v", err)
+	}
+}
+func (p *Player) Single(state bool) {
+	err := p.client.Single(state)
+
+	if err != nil {
+		goreland.LogFatal("Failed to set single state: %v", err)
+	}
+}
 func (p *Player) Stop() {
 	err := p.client.Stop()
 

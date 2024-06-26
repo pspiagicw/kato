@@ -11,6 +11,13 @@ import (
 	"github.com/pspiagicw/yamc/player"
 )
 
+func Repeat(opts *argparse.Opts) {
+	player := player.New(opts)
+	player.Single(true)
+	player.Repeat(true)
+
+}
+
 func Playlist(opts *argparse.Opts) {
 	player := player.New(opts)
 	playlist := player.Playlist()
