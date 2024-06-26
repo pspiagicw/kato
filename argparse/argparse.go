@@ -10,7 +10,8 @@ type Opts struct {
 	Host string
 	Port string
 
-	Args []string
+	Args    []string
+	Version string
 }
 
 func (o *Opts) Command() string {
@@ -25,13 +26,14 @@ func (o *Opts) Command() string {
 
 }
 
-func Parse() *Opts {
+func Parse(VERSION string) *Opts {
 
 	flag.Usage = help.Help
 	o := new(Opts)
 
 	flag.StringVar(&o.Host, `host`, "127.0.0.1", "Host to connect to")
 	flag.StringVar(&o.Port, "port", "6600", "Port to connect to")
+	o.Version = VERSION
 
 	flag.Parse()
 	o.Args = flag.Args()

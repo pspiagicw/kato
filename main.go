@@ -5,7 +5,9 @@ import (
 	"github.com/pspiagicw/yamc/handle"
 )
 
+var VERSION = "unversioned"
+
 func main() {
-	opts := argparse.Parse()
+	opts := argparse.Parse(VERSION)
 	handle.Handle(opts)
 }

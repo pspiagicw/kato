@@ -2,6 +2,9 @@ package help
 
 import "github.com/pspiagicw/pelp"
 
+func Version(version string) {
+	pelp.Version("yamc", version)
+}
 func Help() {
 	pelp.Print("Yet another MPD client")
 	pelp.HeaderWithDescription("Usage", []string{"yamc [flags] [commands]"})
