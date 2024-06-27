@@ -25,7 +25,7 @@ var handlers = map[string]func(*argparse.Opts){
 	"version": func(opts *argparse.Opts) {
 		help.Version(opts.Version)
 	},
-	"seek":     notImplemented,
+	"seek":     manage.Seek,
 	"load":     notImplemented,
 	"like":     notImplemented,
 	"playlist": manage.Playlist,

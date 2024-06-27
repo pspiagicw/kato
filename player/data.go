@@ -19,6 +19,23 @@ type Song struct {
 	Frequency   int
 }
 
+func (p *Player) Seek() (float64, float64) {
+	status := p.Status()
+	elapsed, err := strconv.ParseFloat(status["elapsed"], 32)
+
+	if err != nil {
+		goreland.LogFatal("Failed to get elapsed time: %v", err)
+	}
+
+	total, err := strconv.ParseFloat(status["duration"], 32)
+
+	if err != nil {
+		goreland.LogFatal("Failed to get total time: %v", err)
+	}
+
+	return elapsed, total
+}
+
 func (p *Player) Playlist() []mpd.Attrs {
 	tracks, err := p.client.PlaylistInfo(-1, -1)
 	if err != nil {

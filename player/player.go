@@ -3,6 +3,7 @@ package player
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/pspiagicw/goreland"
@@ -19,6 +20,16 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
+func (p *Player) SeekTo(elapsed float64) {
+	seekTime := time.Second * time.Duration(elapsed)
+
+	err := p.client.SeekCur(seekTime, false)
+
+	if err != nil {
+		goreland.LogFatal("Failed to seek to position: %v", err)
+	}
+}
+
 func (p *Player) Repeat(state bool) {
 	err := p.client.Repeat(state)
 

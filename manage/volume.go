@@ -15,23 +15,23 @@ type VolumeModel struct {
 	volume int
 	widget progress.Model
 	help   help.Model
-	keys   keyMap
+	keys   volumeKeyMap
 
 	player *player.Player
 }
 
-type keyMap struct {
+type volumeKeyMap struct {
 	Quit  key.Binding
 	Raise key.Binding
 	Lower key.Binding
 }
 
-func (k keyMap) FullHelp() [][]key.Binding {
+func (k volumeKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Quit, k.Raise, k.Lower},
 	}
 }
-func (k keyMap) ShortHelp() []key.Binding {
+func (k volumeKeyMap) ShortHelp() []key.Binding {
 	return []key.Binding{k.Quit, k.Raise, k.Lower}
 }
 
@@ -42,7 +42,7 @@ func NewVolumeModel(opts *argparse.Opts) VolumeModel {
 	p := player.New(opts)
 	vol := p.Volume()
 
-	keys := getKeyMap()
+	keys := getVolumeKeyMap()
 	return VolumeModel{
 		volume: vol,
 		widget: progress.New(),
@@ -51,8 +51,8 @@ func NewVolumeModel(opts *argparse.Opts) VolumeModel {
 		player: p,
 	}
 }
-func getKeyMap() keyMap {
-	return keyMap{
+func getVolumeKeyMap() volumeKeyMap {
+	return volumeKeyMap{
 		Quit: key.NewBinding(
 			key.WithKeys("q", "ctrl+c"),
 			key.WithHelp("q", "Quit"),
