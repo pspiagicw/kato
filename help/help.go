@@ -3,11 +3,11 @@ package help
 import "github.com/pspiagicw/pelp"
 
 func Version(version string) {
-	pelp.Version("yamc", version)
+	pelp.Version("kato", version)
 }
 func Help() {
 	pelp.Print("Yet another MPD client")
-	pelp.HeaderWithDescription("Usage", []string{"yamc [flags] [commands]"})
+	pelp.HeaderWithDescription("Usage", []string{"kato [flags] [commands]"})
 	pelp.Flags(
 		"flags",
 		[]string{
@@ -51,8 +51,8 @@ func Help() {
 	pelp.HeaderWithDescription(
 		"More Help",
 		[]string{
-			"Run 'yamc help [command]' for more information on a command",
-			"Visit https://github.com/pspiagicw/yamc for more information",
+			"Run 'kato help [command]' for more information on a command",
+			"Visit https://github.com/pspiagicw/kato for more information",
 		},
 	)
 }

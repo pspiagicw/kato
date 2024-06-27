@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/pspiagicw/yamc/argparse"
-	"github.com/pspiagicw/yamc/player"
+	"github.com/pspiagicw/kato/argparse"
+	"github.com/pspiagicw/kato/player"
 )
 
 var titleStyle = lipgloss.NewStyle().Bold(true).Italic(false)

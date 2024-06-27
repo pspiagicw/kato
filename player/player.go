@@ -7,7 +7,7 @@ import (
 
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/pspiagicw/goreland"
-	"github.com/pspiagicw/yamc/argparse"
+	"github.com/pspiagicw/kato/argparse"
 )
 
 type Player struct {

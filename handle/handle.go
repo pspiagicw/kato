@@ -2,9 +2,9 @@ package handle
 
 import (
 	"github.com/pspiagicw/goreland"
-	"github.com/pspiagicw/yamc/argparse"
-	"github.com/pspiagicw/yamc/help"
-	"github.com/pspiagicw/yamc/manage"
+	"github.com/pspiagicw/kato/argparse"
+	"github.com/pspiagicw/kato/help"
+	"github.com/pspiagicw/kato/manage"
 )
 
 var handlers = map[string]func(*argparse.Opts){

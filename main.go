@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/pspiagicw/yamc/argparse"
-	"github.com/pspiagicw/yamc/handle"
+	"github.com/pspiagicw/kato/argparse"
+	"github.com/pspiagicw/kato/handle"
 )
 
 var VERSION = "unversioned"

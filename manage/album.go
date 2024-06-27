@@ -7,8 +7,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/gerow/pager"
-	"github.com/pspiagicw/yamc/argparse"
-	"github.com/pspiagicw/yamc/player"
+	"github.com/pspiagicw/kato/argparse"
+	"github.com/pspiagicw/kato/player"
 )
 
 func Repeat(opts *argparse.Opts) {

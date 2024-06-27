@@ -3,7 +3,7 @@ package argparse
 import (
 	"flag"
 
-	"github.com/pspiagicw/yamc/help"
+	"github.com/pspiagicw/kato/help"
 )
 
 type Opts struct {

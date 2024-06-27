@@ -7,8 +7,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/pspiagicw/goreland"
-	"github.com/pspiagicw/yamc/argparse"
-	"github.com/pspiagicw/yamc/player"
+	"github.com/pspiagicw/kato/argparse"
+	"github.com/pspiagicw/kato/player"
 )
 
 type VolumeModel struct {

@@ -1,4 +1,4 @@
-module github.com/pspiagicw/yamc
+module github.com/pspiagicw/kato
 
 go 1.21.4
 
