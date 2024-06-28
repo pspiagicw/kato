@@ -20,7 +20,6 @@ var handlers = map[string]func(*argparse.Opts){
 	"shuffle": manage.Shuffle,
 	"stop":    manage.Stop,
 	"mark":    notImplemented,
-	"format":  notImplemented,
 	"save":    notImplemented,
 	"version": func(opts *argparse.Opts) {
 		help.Version(opts.Version)
