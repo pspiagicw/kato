@@ -95,7 +95,7 @@ For more help per command, run `kato help [command]`
 - The current queue is cleared
 - `random` is turned off.
 
-![volume](./gifs/volume.gif)
+![volume](./gifs/artist.gif)
 
 ### shuffle
 
