@@ -46,9 +46,15 @@ func (p *Player) Playlist() []mpd.Attrs {
 }
 func (p *Player) Position() int {
 	pos, err := p.client.Status()
+
 	if err != nil {
 		goreland.LogFatal("Failed to get current song position: %v", err)
 	}
+
+	if pos["song"] == "" {
+		return -1
+	}
+
 	result, err := strconv.Atoi(pos["song"])
 
 	if err != nil {
@@ -61,6 +67,10 @@ func (p *Player) NextPosition() int {
 	pos, err := p.client.Status()
 	if err != nil {
 		goreland.LogFatal("Failed to get current song position: %v", err)
+	}
+
+	if pos["nextsong"] == "" {
+		return -1
 	}
 	result, err := strconv.Atoi(pos["nextsong"])
 

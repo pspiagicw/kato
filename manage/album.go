@@ -7,6 +7,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/fhs/gompd/v2/mpd"
 	"github.com/gerow/pager"
+	"github.com/pspiagicw/goreland"
 	"github.com/pspiagicw/kato/argparse"
 	"github.com/pspiagicw/kato/player"
 )
@@ -73,6 +74,10 @@ func Album(opts *argparse.Opts) {
 
 	selection := promptSelection("", albums)
 
+	if albums[selection] == "" {
+		goreland.LogFatal("No album selected")
+	}
+
 	player.PlayAlbum(albums[selection])
 }
 
@@ -100,6 +105,10 @@ func Artist(opts *argparse.Opts) {
 	player := player.New(opts)
 
 	artist := selectArtist(player)
+
+	if artist == "" {
+		goreland.LogFatal("No artist selected")
+	}
 
 	songs := selectSongs(player, artist)
 

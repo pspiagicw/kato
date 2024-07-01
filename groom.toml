@@ -4,6 +4,9 @@ name = "yamp"
 [task.build]
 command = "go build ."
 description = "Build the project"
+environment = [
+    "CGO_ENABLED=0"
+]
 depends = [
     "format"
 ]

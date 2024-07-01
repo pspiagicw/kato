@@ -20,6 +20,9 @@ func New(opts *argparse.Opts) *Player {
 	return p
 
 }
+func (p *Player) Ping() {
+	p.client.Ping()
+}
 func (p *Player) SeekTo(elapsed float64) {
 	seekTime := time.Second * time.Duration(elapsed)
 
