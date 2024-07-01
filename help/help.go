@@ -39,6 +39,7 @@ func Help() {
 			"seek",
 			"playlist",
 			"repeat",
+			"dash",
 			"help",
 		},
 		[]string{
@@ -57,6 +58,7 @@ func Help() {
 			"Seek to a specific time",
 			"Show the current playlist",
 			"Repeat current song",
+			"Show the dashboard",
 			"Show this help message",
 		},
 	)
