@@ -120,6 +120,13 @@ For more help per command, run `kato help [command]`
 
 ![playlist](./gifs/playlist.gif)
 
+### dash
+
+- Display a simple dash UI with essential info.
+- Simple keybinds to next/prev songs.
+
+![dash](./gifs/dash.gif)
+
 ### repeat
 
 - Repeat current song indefinately.
