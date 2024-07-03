@@ -26,9 +26,19 @@ type SeekModel struct {
 }
 
 type seekKeyMap struct {
-	Quit     key.Binding
-	Forward  key.Binding
-	Backward key.Binding
+	Quit        key.Binding
+	Forward     key.Binding
+	Backward    key.Binding
+	FirstStop   key.Binding
+	SecondStop  key.Binding
+	ThirdStop   key.Binding
+	FourthStop  key.Binding
+	FifthStop   key.Binding
+	SixthStop   key.Binding
+	SeventhStop key.Binding
+	EighthStop  key.Binding
+	NinthStop   key.Binding
+	LastStop    key.Binding
 }
 
 func (s seekKeyMap) FullHelp() [][]key.Binding {
@@ -73,6 +83,46 @@ func getSeekKeyMap() seekKeyMap {
 			key.WithKeys("h", "left"),
 			key.WithHelp("h", "Backward"),
 		),
+		FirstStop: key.NewBinding(
+			key.WithKeys("1"),
+			key.WithHelp("1", "Seek to 10%"),
+		),
+		SecondStop: key.NewBinding(
+			key.WithKeys("2"),
+			key.WithHelp("2", "Seek to 20%"),
+		),
+		ThirdStop: key.NewBinding(
+			key.WithKeys("3"),
+			key.WithHelp("3", "Seek to 30%"),
+		),
+		FourthStop: key.NewBinding(
+			key.WithKeys("4"),
+			key.WithHelp("4", "Seek to 40%"),
+		),
+		FifthStop: key.NewBinding(
+			key.WithKeys("5"),
+			key.WithHelp("5", "Seek to 50%"),
+		),
+		SixthStop: key.NewBinding(
+			key.WithKeys("6"),
+			key.WithHelp("6", "Seek to 60%"),
+		),
+		SeventhStop: key.NewBinding(
+			key.WithKeys("7"),
+			key.WithHelp("7", "Seek to 70%"),
+		),
+		EighthStop: key.NewBinding(
+			key.WithKeys("8"),
+			key.WithHelp("8", "Seek to 80%"),
+		),
+		NinthStop: key.NewBinding(
+			key.WithKeys("9"),
+			key.WithHelp("9", "Seek to 90%"),
+		),
+		LastStop: key.NewBinding(
+			key.WithKeys("0"),
+			key.WithHelp("0", "Seek to 100%"),
+		),
 	}
 }
 
@@ -90,11 +140,46 @@ func (s SeekModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if key.Matches(msg, s.keys.Backward) {
 			return s.seekBackward(), nil
 		}
+		if key.Matches(msg, s.keys.FirstStop) {
+			return s.seekTo(10), nil
+		}
+		if key.Matches(msg, s.keys.SecondStop) {
+			return s.seekTo(20), nil
+		}
+		if key.Matches(msg, s.keys.ThirdStop) {
+			return s.seekTo(30), nil
+		}
+		if key.Matches(msg, s.keys.FourthStop) {
+			return s.seekTo(40), nil
+		}
+		if key.Matches(msg, s.keys.FifthStop) {
+			return s.seekTo(50), nil
+		}
+		if key.Matches(msg, s.keys.SixthStop) {
+			return s.seekTo(60), nil
+		}
+		if key.Matches(msg, s.keys.SeventhStop) {
+			return s.seekTo(70), nil
+		}
+		if key.Matches(msg, s.keys.EighthStop) {
+			return s.seekTo(80), nil
+		}
+		if key.Matches(msg, s.keys.NinthStop) {
+			return s.seekTo(90), nil
+		}
+		if key.Matches(msg, s.keys.LastStop) {
+			return s.seekTo(100), nil
+		}
 	case seekMsg:
 		s.elapsed = msg.elapsed
 		s.total = msg.total
 	}
 	return s, nil
+}
+func (s SeekModel) seekTo(percent float64) tea.Model {
+	s.elapsed = percent * s.total / 100
+	s.player.SeekTo(s.elapsed)
+	return s
 }
 func (s SeekModel) seekForward() tea.Model {
 	s.elapsed += 2
