@@ -111,6 +111,8 @@ For more help per command, run `kato help [command]`
 ### seek
 
 - Control song position interactively.
+- Use `l/h` to move right or left
+- Or use number keys to adjust percent directory (1=10%, 9=90%, 0=100%)
 
 ![seek](./gifs/seek.gif)
 
