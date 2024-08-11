@@ -8,7 +8,7 @@ environment = [
     "CGO_ENABLED=0"
 ]
 depends = [
-    "format"
+    "format",
 ]
 
 [task.format]
@@ -19,3 +19,9 @@ description = "Format the project"
 [task.run]
 command = "go run ."
 description = "Run the project"
+
+
+[task.gifs]
+shell = "bash"
+directory = "gifs"
+command = 'find . -type f -name "*.tape" -exec vhs {} \;'
