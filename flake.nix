@@ -18,6 +18,7 @@
           pkgs.vhs
           pkgs.gopls
           pkgs.bashInteractive
+          pkgs.goreleaser
         ];
       };
   };
